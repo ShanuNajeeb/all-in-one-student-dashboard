@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Select Theme - Student Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+    }
+    .theme-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 600px;
+    }
+    .theme-card {
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .theme-card:hover {
+      box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+    .theme-name {
+      margin-top: 0.75rem;
+      font-weight: 600;
+      color: #374151;
+      font-size: 1.125rem;
+    }
+    .theme-icon {
+      font-size: 3rem;
+      color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select a Theme</h1>
+  <div class="theme-list" role="list">
+    <a href="dark-orange.html" class="theme-card" role="listitem" aria-label="Dark Orange Theme">
+      <i class="fas fa-adjust theme-icon" aria-hidden="true"></i>
+      <div class="theme-name">Dark Orange</div>
+    </a>
+    <a href="red-blaze.html" class="theme-card" role="listitem" aria-label="Red Blaze Theme">
+      <i class="fas fa-fire theme-icon" aria-hidden="true"></i>
+      <div class="theme-name">Red Blaze</div>
+    </a>
+    <a href="forest-green.html" class="theme-card" role="listitem" aria-label="Forest Green Theme">
+      <i class="fas fa-leaf theme-icon" aria-hidden="true"></i>
+      <div class="theme-name">Forest Green</div>
+    </a>
+    <a href="purple-night.html" class="theme-card" role="listitem" aria-label="Purple Night Theme">
+      <i class="fas fa-moon theme-icon" aria-hidden="true"></i>
+      <div class="theme-name">Purple Night</div>
+    </a>
+    <a href="pink-blossom.html" class="theme-card" role="listitem" aria-label="Pink Blossom Theme">
+      <i class="fas fa-heart theme-icon" aria-hidden="true"></i>
+      <div class="theme-name">Pink Blossom</div>
+    </a>
+    <a href="light-mode.html" class="theme-card" role="listitem" aria-label="Light Mode Theme">
+      <i class="fas fa-sun theme-icon" aria-hidden="true"></i>
+      <div class="theme-name">Light Mode</div>
+    </a>
+  </div>
+</body>
+</html>
