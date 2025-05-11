@@ -17,14 +17,33 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      color: #334e68;
+      background: #000000;
+      color: #F1F1F1;
       line-height: 1.6;
       scroll-behavior: smooth;
       min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      background: radial-gradient(circle at center, #111111, #000000 80%);
+      background-size: 200% 200%;
+      animation: backgroundFlow 40s linear infinite;
+    }
+    body::before {
+      content: none;
+    }
+    @keyframes backgroundFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
     a {
-      color: inherit;
+      color: #1ABC9C;
       text-decoration: none;
     }
     a:hover, a:focus {
@@ -69,10 +88,37 @@
     .text-center {
       text-align: center;
     }
-    .btn {
+    .logo-container {
+      max-width: 120px;
+      flex-shrink: 0;
+    }
+    .logo-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .btn-primary {
       display: inline-block;
-      background-color: #627d98;
-      color: #f0f4f8;
+      background: linear-gradient(90deg, #00bcd4, #7c4dff);
+      color: #F1F1F1;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      border: none;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(124, 77, 255, 0.6);
+    }
+    .btn-primary:hover, .btn-primary:focus {
+      background: linear-gradient(90deg, #007c91, #5a3dbb);
+      outline: none;
+    }
+    .btn-secondary {
+      display: inline-block;
+      background-color: #66cc99;
+      color: #000000;
       padding: 0.75rem 2rem;
       border-radius: 0.5rem;
       font-weight: 600;
@@ -81,17 +127,18 @@
       transition: background-color 0.3s ease;
       border: none;
       text-align: center;
-      box-shadow: 0 4px 6px rgba(99, 115, 129, 0.3);
+      box-shadow: 0 4px 6px rgba(102, 204, 153, 0.5);
+      margin-left: 1rem;
     }
-    .btn:hover, .btn:focus {
-      background-color: #486581;
+    .btn-secondary:hover, .btn-secondary:focus {
+      background-color: #57b386;
       outline: none;
     }
     /* Subtle background animation: pulsing circles */
     .pulse-circle {
       position: fixed;
       border-radius: 50%;
-      background: rgba(99, 115, 129, 0.15);
+      background: rgba(203, 213, 225, 0.15);
       animation: pulse 6s ease-in-out infinite;
       pointer-events: none;
       z-index: 1;
@@ -110,6 +157,7 @@
       left: 80%;
       animation-delay: 3s;
     }
+    /* New floating glowing orbs */
     @keyframes pulse {
       0%, 100% {
         transform: scale(1);
@@ -160,12 +208,12 @@
     header h1 {
       font-size: 3.5rem;
       font-weight: 700;
-      color: #334e68;
+      color: #D6A2E8;
       margin-bottom: 0.5rem;
     }
     header p {
       font-size: 1.5rem;
-      color: #627d98;
+      color: #F1F1F1;
       margin-bottom: 2rem;
       max-width: 600px;
       margin-left: auto;
@@ -173,12 +221,12 @@
     }
     /* Features Section */
     section.features {
-      background-color: #ffffffcc;
+      background-color: #1a1a1acc;
       padding: 3rem 1rem;
       border-radius: 1rem;
       max-width: 1100px;
       margin: 0 auto 3rem;
-      box-shadow: 0 4px 12px rgba(99, 115, 129, 0.15);
+      box-shadow: 0 4px 12px rgba(203, 213, 225, 0.15);
     }
     .features-grid {
       display: grid;
@@ -186,46 +234,48 @@
       gap: 2rem;
     }
     .feature-card {
-      background-color: #f0f4f8;
+      background-color: #121212;
       border-radius: 1rem;
       padding: 2rem 1.5rem;
-      box-shadow: 0 2px 6px rgba(99, 115, 129, 0.1);
+      box-shadow: 0 2px 6px rgba(0, 255, 255, 0.1);
       text-align: center;
-      color: #334e68;
+      color: #F1F1F1;
       cursor: default;
       transition: box-shadow 0.3s ease;
+      border: 1px solid transparent;
     }
     .feature-card:hover, .feature-card:focus-within {
-      box-shadow: 0 6px 16px rgba(99, 115, 129, 0.2);
+      box-shadow: 0 6px 16px rgba(0, 255, 255, 0.3);
       outline: none;
+      border-color: #00FFFF;
     }
     .feature-icon {
       font-size: 2.5rem;
-      color: #627d98;
+      color: #00FFFF;
       margin-bottom: 1rem;
     }
     .feature-title {
       font-weight: 600;
       font-size: 1.25rem;
       margin-bottom: 0.5rem;
-      color: #334e68;
+      color: #D6A2E8;
     }
     /* How It Helps Section */
     section.how-it-helps {
-      background-color: #ffffffcc;
+      background-color: #1a1a1acc;
       padding: 3rem 1rem;
       border-radius: 1rem;
       max-width: 700px;
       margin: 0 auto 3rem;
-      color: #334e68;
-      box-shadow: 0 4px 12px rgba(99, 115, 129, 0.15);
+      color: #F1F1F1;
+      box-shadow: 0 4px 12px rgba(0, 255, 255, 0.15);
       text-align: center;
     }
     section.how-it-helps h2 {
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
-      color: #334e68;
+      color: #cbd5e1;
     }
     .helps-list {
       list-style: none;
@@ -239,14 +289,14 @@
       position: relative;
       padding-left: 1.5rem;
       text-align: left;
-      color: #627d98;
+      color: #94a3b8;
     }
     .helps-list li::before {
       content: "✓";
       position: absolute;
       left: 0;
       top: 0;
-      color: #334e68;
+      color: #cbd5e1;
       font-weight: 700;
       font-size: 1.25rem;
       line-height: 1;
@@ -263,7 +313,7 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 2rem;
-      color: #334e68;
+      color: #D6A2E8;
       text-align: center;
     }
     .theme-cards {
@@ -273,12 +323,12 @@
       justify-content: center;
     }
     .theme-card {
-      background-color: #f0f4f8;
+      background-color: #121212;
       border-radius: 1rem;
-      box-shadow: 0 2px 8px rgba(99, 115, 129, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 255, 255, 0.1);
       overflow: hidden;
       transition: box-shadow 0.3s ease;
-      color: #334e68;
+      color: #F1F1F1;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -287,10 +337,12 @@
       text-align: center;
       max-width: 280px;
       margin: 0 auto;
+      border: 1px solid transparent;
     }
     .theme-card:hover, .theme-card:focus {
-      box-shadow: 0 6px 20px rgba(99, 115, 129, 0.2);
+      box-shadow: 0 6px 20px rgba(0, 255, 255, 0.3);
       outline: none;
+      border-color: #00FFFF;
     }
     .theme-card img {
       border-radius: 0.5rem;
@@ -307,11 +359,11 @@
       font-weight: 600;
       font-size: 1.25rem;
       margin-bottom: 1rem;
-      color: #334e68;
+      color: #D6A2E8;
     }
     .try-btn {
-      background-color: #627d98;
-      color: #f0f4f8;
+      background-color: #FF4E50;
+      color: #F1F1F1;
       padding: 0.5rem 1.5rem;
       border-radius: 0.5rem;
       font-weight: 600;
@@ -319,13 +371,13 @@
       cursor: pointer;
       border: none;
       text-decoration: none;
-      box-shadow: 0 4px 6px rgba(99, 125, 152, 0.3);
+      box-shadow: 0 4px 6px rgba(255, 78, 80, 0.3);
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
       user-select: none;
     }
     .try-btn:hover, .try-btn:focus {
-      background-color: #486581;
-      box-shadow: 0 6px 12px rgba(72, 101, 129, 0.5);
+      background-color: #e04344;
+      box-shadow: 0 6px 12px rgba(224, 67, 68, 0.5);
       outline: none;
     }
     /* Center Pink Blossom and Light Mode cards */
@@ -335,23 +387,23 @@
     }
     /* Footer */
     footer {
-      background-color: #f0f4f8;
-      color: #627d98;
+      background-color: #1e1e2f;
+      color: #AAAAAA;
       padding: 2rem 1rem;
       text-align: center;
       font-size: 0.9rem;
-      border-top: 1px solid #d9e2ec;
+      border-top: 1px solid #121224;
       position: relative;
       z-index: 10;
     }
     footer a {
-      color: #486581;
+      color: #1ABC9C;
       font-weight: 600;
       margin: 0 0.5rem;
       transition: color 0.3s ease;
     }
     footer a:hover, footer a:focus {
-      color: #334e68;
+      color: #D6A2E8;
       outline: none;
     }
     .social-icons {
@@ -360,11 +412,11 @@
     .social-icons a {
       font-size: 1.5rem;
       margin: 0 0.75rem;
-      color: #627d98;
+      color: #00FFFF;
       transition: color 0.3s ease;
     }
     .social-icons a:hover, .social-icons a:focus {
-      color: #334e68;
+      color: #D6A2E8;
       outline: none;
     }
     .back-to-top {
@@ -406,13 +458,18 @@
   <div class="pulse-circle pulse1" aria-hidden="true"></div>
   <div class="pulse-circle pulse2" aria-hidden="true"></div>
 
-  <header>
-    <div class="container">
-      <h1>Student Dashboard</h1>
-      <p>Stay focused, organized, and productive.</p>
-      <a href="dark-orange.html" class="btn" role="button">Start Now</a>
-    </div>
-  </header>
+    <header>
+      <div class="container flex items-start sm:flex-row sm:justify-start sm:items-center gap-6">
+        <div class="logo-container" style="max-width: 300px;">
+          <img src="assets/images/logo-placeholder.png" alt="Logo" class="logo-image" style="width: 100%; height: auto;" />
+        </div>
+        <div class="header-content text-left flex-1">
+          <h1>Student Dashboard</h1>
+          <p>Stay focused, organized, and productive.</p>
+          <a href="dark-orange.html" class="btn-primary" role="button">Start Now</a>
+        </div>
+      </div>
+    </header>
 
   <section class="intro-text" style="max-width: 900px; margin: 0 auto 3rem; padding: 0 1rem; color: #cbd5e1; text-align: center;">
     <p style="font-size: 1.125rem; line-height: 1.6; max-width: 700px; margin: 0 auto; color: #94a3b8;">
@@ -447,11 +504,16 @@
 
   <section class="how-it-helps" aria-label="How It Helps">
     <h2>How It Helps</h2>
-    <ul class="helps-list">
-      <li>Clean UI for student focus</li>
-      <li>Multiple themes to match moods</li>
-      <li>Lightweight, no account needed</li>
-      <li>Works instantly in browser</li>
+    <p style="max-width: 800px; margin: 0 auto 1.5rem; color: #F1F1F1;">
+      Our dashboard is designed to empower students by streamlining their study routines and boosting productivity.
+    </p>
+    <ul class="helps-list" style="max-width: 900px; margin: 0 auto; padding-left: 1rem; color: #F1F1F1; list-style: none;">
+      <li>📅 <strong>Organized Scheduling:</strong> Keep track of assignments and deadlines effortlessly.</li>
+      <li>⏳ <strong>Focused Sessions:</strong> Use Pomodoro timers to enhance concentration and manage breaks.</li>
+      <li>🃏 <strong>Effective Flashcards:</strong> Create and review flashcards to reinforce learning.</li>
+      <li>🤖 <strong>AI Summarization:</strong> Quickly understand complex topics with AI-generated summaries.</li>
+      <li>🎨 <strong>Custom Themes:</strong> Personalize your dashboard to suit your style and mood.</li>
+      <li>🔒 <strong>Privacy First:</strong> No account needed, your data stays local and secure.</li>
     </ul>
   </section>
 
