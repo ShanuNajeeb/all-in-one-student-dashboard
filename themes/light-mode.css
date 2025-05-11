@@ -1,0 +1,48 @@
+:root {
+  --bg-color: #f5f1e9; /* beige background */
+  --text-color: #4b3b00; /* dark brown text */
+  --primary-color: #d4af37; /* golden yellow */
+  --secondary-color: #f0d87d; /* lighter golden yellow */
+  --card-bg: #f9f5e1; /* light beige card background */
+  --card-bg-alt: #f3ecd1; /* lighter beige alternative card background */
+  --text-alt: #a67c00; /* golden brown text alternative */
+  --shadow-color: rgba(212, 175, 55, 0.5); /* golden yellow shadow */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 6px var(--shadow-color);
+  border-radius: 1rem;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-alt {
+  background-color: var(--card-bg-alt);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  box-shadow: 0 0 10px var(--primary-color);
+  transition: box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 20px var(--secondary-color);
+}
