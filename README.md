@@ -25,10 +25,10 @@ To get started with the All-in-One Student Dashboard, follow these steps:
    ```bash
    cd student-dashboard
    ```
-3. Open the `index.html` file in your web browser to start using the dashboard:
+3. Open the `dark-orange.html ` file in your web browser to start using the dashboard:
    ```bash
-   open index.html  # for macOS
-   start index.html # for Windows
+   open dark-orange.html   # for macOS
+   start dark-orange.html  # for Windows
    ```
 
 **Note:** This project does not require any additional installations or builds, as it is a static HTML and JavaScript application.
