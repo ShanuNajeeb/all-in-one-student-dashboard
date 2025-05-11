@@ -3,765 +3,504 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>All-in-One Student Dashboard</title>
+  <title>Student Dashboard - Landing Page</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
   />
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Inter', sans-serif;
       margin: 0;
-      overflow-x: hidden;
-      position: relative;
-      z-index: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      color: #334e68;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      min-height: 100vh;
     }
-    #background-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      pointer-events: none;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    a:hover, a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+    img {
+      max-width: 100%;
       display: block;
+      border-radius: 0.5rem;
+      transition: transform 0.3s ease;
     }
-    .fade-in {
-      animation: fadeIn 1.2s ease forwards;
+    img:hover, img:focus {
+      transform: scale(1.03);
+      outline: none;
+    }
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 10;
+    }
+    /* Utility */
+    .flex {
+      display: flex;
+    }
+    .flex-center {
+      justify-content: center;
+      align-items: center;
+    }
+    .flex-col {
+      flex-direction: column;
+    }
+    .space-y-6 > * + * {
+      margin-top: 1.5rem;
+    }
+    .space-x-6 > * + * {
+      margin-left: 1.5rem;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #627d98;
+      color: #f0f4f8;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      border: none;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(99, 115, 129, 0.3);
+    }
+    .btn:hover, .btn:focus {
+      background-color: #486581;
+      outline: none;
+    }
+    /* Subtle background animation: pulsing circles */
+    .pulse-circle {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(99, 115, 129, 0.15);
+      animation: pulse 6s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .pulse1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+    .pulse2 {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      left: 80%;
+      animation-delay: 3s;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.15;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.05;
+      }
+    }
+    /* Section Transitions */
+    section {
       opacity: 0;
+      transform: translateY(20px);
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-out;
+      animation-duration: 1s;
     }
-    @keyframes fadeIn {
+    section:nth-of-type(1) {
+      animation-name: fadeSlideUp;
+      animation-delay: 0.2s;
+    }
+    section:nth-of-type(2) {
+      animation-name: fadeSlideUp;
+      animation-delay: 0.5s;
+    }
+    section:nth-of-type(3) {
+      animation-name: fadeSlideUp;
+      animation-delay: 0.8s;
+    }
+    section:nth-of-type(4) {
+      animation-name: fadeSlideUp;
+      animation-delay: 1.1s;
+    }
+    @keyframes fadeSlideUp {
       to {
         opacity: 1;
+        transform: translateY(0);
       }
     }
-    .perspective {
-      perspective: 1000px;
+    /* Header / Hero */
+    header {
+      padding: 5rem 0 4rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
     }
-    .backface-hidden {
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
+    header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #334e68;
+      margin-bottom: 0.5rem;
     }
-    .transform-style-preserve-3d {
-      transform-style: preserve-3d;
+    header p {
+      font-size: 1.5rem;
+      color: #627d98;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .rotate-y-180 {
-      transform: rotateY(180deg);
-    }
-  </style>
-  <link id="theme-link" rel="stylesheet" href="themes/dark-orange.css" />
-  <style id="theme-light-mode" disabled>
-    :root {
-      --bg-color: #ffffff;
-      --text-color: #1f2937;
-      --primary-color: #3b82f6;
-      --secondary-color: #60a5fa;
-      --card-bg: #f3f4f6;
-      --card-bg-alt: #e5e7eb;
-      --text-alt: #2563eb;
-      --shadow-color: rgba(59, 130, 246, 0.5);
-    }
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-    .card {
-      background-color: var(--card-bg);
-      box-shadow: 0 4px 6px var(--shadow-color);
+    /* Features Section */
+    section.features {
+      background-color: #ffffffcc;
+      padding: 3rem 1rem;
       border-radius: 1rem;
-      border: 2px solid transparent;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      box-shadow: 0 4px 12px rgba(99, 115, 129, 0.15);
     }
-    .card-alt {
-      background-color: var(--card-bg-alt);
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
     }
-    .text-primary {
-      color: var(--primary-color);
-    }
-    .text-secondary {
-      color: var(--secondary-color);
-    }
-    .btn-primary {
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      border: none;
-      box-shadow: 0 0 10px var(--primary-color);
+    .feature-card {
+      background-color: #f0f4f8;
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 2px 6px rgba(99, 115, 129, 0.1);
+      text-align: center;
+      color: #334e68;
+      cursor: default;
       transition: box-shadow 0.3s ease;
     }
-    .btn-primary:hover {
-      background-color: var(--secondary-color);
-      box-shadow: 0 0 20px var(--secondary-color);
+    .feature-card:hover, .feature-card:focus-within {
+      box-shadow: 0 6px 16px rgba(99, 115, 129, 0.2);
+      outline: none;
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      color: #627d98;
+      margin-bottom: 1rem;
+    }
+    .feature-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #334e68;
+    }
+    /* How It Helps Section */
+    section.how-it-helps {
+      background-color: #ffffffcc;
+      padding: 3rem 1rem;
+      border-radius: 1rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      color: #334e68;
+      box-shadow: 0 4px 12px rgba(99, 115, 129, 0.15);
+      text-align: center;
+    }
+    section.how-it-helps h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #334e68;
+    }
+    .helps-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 400px;
+    }
+    .helps-list li {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 1.5rem;
+      text-align: left;
+      color: #627d98;
+    }
+    .helps-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #334e68;
+      font-weight: 700;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    /* Theme Preview Section */
+    section.theme-showcase {
+      max-width: 1100px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 10;
+    }
+    section.theme-showcase h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: #334e68;
+      text-align: center;
+    }
+    .theme-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      justify-content: center;
+    }
+    .theme-card {
+      background-color: #f0f4f8;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(99, 115, 129, 0.1);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+      color: #334e68;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      cursor: pointer;
+      text-align: center;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .theme-card:hover, .theme-card:focus {
+      box-shadow: 0 6px 20px rgba(99, 115, 129, 0.2);
+      outline: none;
+    }
+    .theme-card img {
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      max-height: 140px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .theme-card:hover img, .theme-card:focus img {
+      transform: scale(1.05);
+      outline: none;
+    }
+    .theme-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #334e68;
+    }
+    .try-btn {
+      background-color: #627d98;
+      color: #f0f4f8;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      box-shadow: 0 4px 6px rgba(99, 125, 152, 0.3);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .try-btn:hover, .try-btn:focus {
+      background-color: #486581;
+      box-shadow: 0 6px 12px rgba(72, 101, 129, 0.5);
+      outline: none;
+    }
+    /* Center Pink Blossom and Light Mode cards */
+    .theme-cards > a:nth-child(5),
+    .theme-cards > a:nth-child(6) {
+      justify-self: center;
+    }
+    /* Footer */
+    footer {
+      background-color: #f0f4f8;
+      color: #627d98;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px solid #d9e2ec;
+      position: relative;
+      z-index: 10;
+    }
+    footer a {
+      color: #486581;
+      font-weight: 600;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+    footer a:hover, footer a:focus {
+      color: #334e68;
+      outline: none;
+    }
+    .social-icons {
+      margin-top: 1rem;
+    }
+    .social-icons a {
+      font-size: 1.5rem;
+      margin: 0 0.75rem;
+      color: #627d98;
+      transition: color 0.3s ease;
+    }
+    .social-icons a:hover, .social-icons a:focus {
+      color: #334e68;
+      outline: none;
+    }
+    .back-to-top {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: #9fb3c8;
+    }
+    .back-to-top a {
+      color: #627d98;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .back-to-top a:hover, .back-to-top a:focus {
+      color: #334e68;
+      outline: none;
+      text-decoration: underline;
+    }
+    /* Responsive */
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      section.features, section.how-it-helps, section.theme-showcase {
+        padding: 2rem 0;
+      }
+      .features-grid, .theme-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .theme-card {
+        max-width: 320px;
+        margin: 0 auto;
+      }
     }
   </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const themeSelect = document.getElementById('theme-select');
-          const themeLink = document.getElementById('theme-css');
-          const lightModeStyle = document.getElementById('theme-light-mode');
-
-          function setTheme(theme) {
-          const themeLink = document.getElementById('theme-link');
-          if (!themeLink) return;
-          if (theme === 'light-mode') {
-            themeLink.href = '/themes/light-mode.css';
-          } else {
-            const cleanTheme = theme.endsWith('.css') ? theme : `${theme}.css`;
-            themeLink.href = `/themes/${cleanTheme}`;
-          }
-          localStorage.setItem('selectedTheme', theme);
-          themeSelect.value = theme;
-          }
-
-          function switchTheme(theme) {
-            setTheme(theme);
-          }
-
-          themeSelect.addEventListener('change', (e) => {
-            const selectedTheme = e.target.value;
-            switchTheme(selectedTheme);
-          });
-
-          // Initialize theme on page load
-          const savedTheme = localStorage.getItem('selectedTheme') || 'dark-orange.css';
-          setTheme(savedTheme);
-        });
-      </script>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-  <canvas id="background-canvas"></canvas>
-  <main class="max-w-7xl w-full relative z-10">
-    <section class="text-center mb-12 fade-in">
-      <h1 class="text-4xl sm:text-5xl font-extrabold text-primary mb-4">
-        All-in-One Student Dashboard
-      </h1>
-      <p class="text-lg sm:text-xl text-secondary max-w-3xl mx-auto">
-        Your tools for productivity, focus, and smarter learning - all in one place.
-      </p>
-    </section>
+<body>
+  <!-- Background pulsing circles -->
+  <div class="pulse-circle pulse1" aria-hidden="true"></div>
+  <div class="pulse-circle pulse2" aria-hidden="true"></div>
 
-    <div class="fixed top-4 right-4 z-50">
-      <label for="theme-select" class="sr-only">Select Theme</label>
-      <select id="theme-select" class="bg-gray-900 text-primary rounded-md p-2 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary hover:bg-primary hover:text-white transition-colors duration-300">
-        <option value="dark-orange.css" selected>Dark Orange</option>
-        <option value="red-blaze.css">Red Blaze</option>
-        <option value="forest-green.css">Forest Green</option>
-        <option value="purple-night.css">Purple Night</option>
-        <option value="pink-blossom.css">Pink Blossom</option>
-        <option value="light-mode">Light Mode</option>
-      </select>
-
+  <header>
+    <div class="container">
+      <h1>Student Dashboard</h1>
+      <p>Stay focused, organized, and productive.</p>
+      <a href="dark-orange.html" class="btn" role="button">Start Now</a>
     </div>
+  </header>
 
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 fade-in" style="animation-delay: 0.3s;">
-      <!-- To-Do List Card -->
-      <article class="card p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col" aria-label="To-Do List Tool">
-        <h2 class="text-2xl font-semibold text-primary mb-3 flex items-center">
-          <i class="fas fa-check-circle mr-2"></i> To-Do List
-        </h2>
-        <p class="text-secondary mb-4">Manage daily tasks with ease.</p>
-        <div class="mb-2">
-          <input
-            id="todo-input"
-            type="text"
-            placeholder="Add a new task"
-            class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary h-10 bg-card-alt text-text-alt placeholder-text-alt"
-            aria-label="Add new task"
-          />
-        </div>
-        <button
-          id="add-todo-btn"
-          class="btn-primary px-4 py-2 rounded-md w-full"
-          aria-label="Add task"
-        >
-          Add
-        </button>
-        <ul id="todo-list" class="list-disc list-inside text-secondary space-y-2 max-h-48 overflow-y-auto" aria-live="polite"></ul>
+  <section class="features" aria-label="Feature Highlights">
+    <div class="container features-grid">
+      <article class="feature-card" tabindex="0">
+        <i class="fas fa-check-circle feature-icon" aria-hidden="true"></i>
+        <h3 class="feature-title">To-do List</h3>
+        <p>Keep track of your daily tasks and stay organized.</p>
       </article>
-
-      <!-- Pomodoro Timer Card -->
-      <article class="card p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col" aria-label="Pomodoro Timer Tool">
-        <h2 class="text-2xl font-semibold text-primary mb-3 flex items-center">
-          <i class="fas fa-hourglass-start mr-2"></i> Pomodoro Timer
-        </h2>
-        <p class="text-secondary mb-4">Customizable focus &amp; break cycles.</p>
-        <div class="flex flex-col items-center space-y-4">
-          <div class="relative w-32 h-32">
-            <svg class="transform -rotate-90" viewBox="0 0 100 100" width="128" height="128" aria-hidden="true" focusable="false">
-              <circle
-                cx="50"
-                cy="50"
-                r="45"
-                stroke="var(--primary-color)"
-                stroke-width="10"
-                fill="none"
-              ></circle>
-              <circle
-                id="progress-ring"
-                cx="50"
-                cy="50"
-                r="45"
-                stroke="var(--secondary-color)"
-                stroke-width="10"
-                fill="none"
-                stroke-linecap="round"
-                stroke-dasharray="282.6"
-                stroke-dashoffset="282.6"
-              ></circle>
-            </svg>
-            <div
-              id="timer-display"
-              class="absolute inset-0 flex items-center justify-center text-3xl font-semibold text-primary select-none"
-              aria-live="polite"
-              aria-atomic="true"
-            >
-              25:00
-            </div>
-          </div>
-          <div class="flex space-x-4">
-            <button
-              id="start-pause-btn"
-              class="btn-primary px-6 py-2 rounded-lg shadow-md focus:outline-none focus:ring-4 focus:ring-primary"
-              aria-pressed="false"
-              aria-label="Start or pause timer"
-            >
-              Start
-            </button>
-            <button
-              id="reset-btn"
-              class="bg-card-alt text-text-alt px-6 py-2 rounded-lg shadow-md focus:outline-none focus:ring-4 focus:ring-card-alt"
-              aria-label="Reset timer"
-            >
-              Reset
-            </button>
-          </div>
-          <div class="flex space-x-4 mt-4">
-            <label for="focus-length" class="text-secondary text-sm flex items-center space-x-2">
-              <span>Focus (min):</span>
-              <input
-                type="number"
-                id="focus-length"
-                min="1"
-                max="180"
-                class="w-16 rounded-md border border-gray-300 px-2 py-1 text-center text-primary focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Set focus length in minutes"
-              />
-            </label>
-            <label for="break-length" class="text-secondary text-sm flex items-center space-x-2">
-              <span>Break (min):</span>
-              <input
-                type="number"
-                id="break-length"
-                min="1"
-                max="60"
-                class="w-16 rounded-md border border-gray-300 px-2 py-1 text-center text-primary focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Set break length in minutes"
-              />
-            </label>
-          </div>
-          <div class="text-secondary text-sm select-none" id="session-type" aria-live="polite" aria-atomic="true">Focus Session</div>
-        </div>
+      <article class="feature-card" tabindex="0">
+        <i class="fas fa-hourglass-start feature-icon" aria-hidden="true"></i>
+        <h3 class="feature-title">Pomodoro Timer</h3>
+        <p>Focus with customizable work and break intervals.</p>
       </article>
-
-      <!-- Flashcards Tool Card -->
-      <article class="card p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col" aria-label="Flashcards Tool">
-        <h2 class="text-2xl font-semibold text-primary mb-3 flex items-center">
-          <i class="fas fa-clone mr-2"></i> Flashcards Tool
-        </h2>
-        <p class="text-secondary mb-4">Create and flip custom flashcards.</p>
-        <div class="flex flex-col space-y-4">
-          <div
-            id="flashcard"
-            class="relative w-full h-40 bg-card-alt rounded-lg shadow-md cursor-pointer select-none perspective"
-            tabindex="0"
-            aria-label="Flashcard"
-          >
-            <div
-              id="flashcard-inner"
-              class="absolute w-full h-full transition-transform duration-500 transform-style-preserve-3d rounded-lg"
-            >
-              <div
-                id="flashcard-front"
-                class="absolute w-full h-full backface-hidden flex items-center justify-center text-xl font-semibold text-primary p-4"
-              >
-                Front Side
-              </div>
-              <div
-                id="flashcard-back"
-                class="absolute w-full h-full backface-hidden flex items-center justify-center text-xl font-semibold text-primary p-4 rotate-y-180 bg-card-alt rounded-lg"
-              >
-                Back Side
-              </div>
-            </div>
-          </div>
-
-          <form id="flashcard-form" class="flex flex-col space-y-2" aria-label="Add new flashcard">
-            <input
-              type="text"
-              id="flashcard-front-input"
-              placeholder="Front text"
-              class="border border-card-alt rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-card-alt text-text-alt placeholder-text-alt"
-              required
-            />
-            <input
-              type="text"
-              id="flashcard-back-input"
-              placeholder="Back text"
-              class="border border-card-alt rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-card-alt text-text-alt placeholder-text-alt"
-              required
-            />
-            <button
-              type="submit"
-              class="btn-primary px-4 py-2 rounded-md"
-            >
-              Add Flashcard
-            </button>
-          </form>
-
-          <ul id="flashcard-list" class="space-y-2 max-h-48 overflow-y-auto text-secondary bg-card p-2 rounded-md" aria-live="polite"></ul>
-        </div>
+      <article class="feature-card" tabindex="0">
+        <i class="fas fa-clone feature-icon" aria-hidden="true"></i>
+        <h3 class="feature-title">Flashcards</h3>
+        <p>Create and review flashcards to boost your learning.</p>
       </article>
-
-      <!-- Summary Tool Card -->
-      <article class="card p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center" aria-label="Blackbox AI Prompt Sender">
-        <h2 class="text-2xl font-semibold text-primary mb-3 flex items-center justify-center w-full">
-          <i class="fas fa-robot mr-2"></i> Generate Summary with AI
-        </h2>
-        <textarea
-          id="bbai-input"
-          rows="5"
-          placeholder="Enter YouTube link, text, or summary request here..."
-          class="w-full max-w-xl rounded-md border border-card-alt p-3 text-text-alt placeholder-text-alt focus:outline-none focus:ring-2 focus:ring-primary resize-none transition duration-300"
-          aria-label="Input for Blackbox AI"
-        ></textarea>
-        <button
-          id="bbai-send-btn"
-          class="btn-primary mt-4 w-full max-w-xl px-4 py-2 rounded-md"
-          aria-label="Send to AI"
-        >
-          Send to AI
-        </button>
-        <div
-          id="bbai-message"
-          class="mt-3 text-secondary text-center opacity-0 transition-opacity duration-500"
-          aria-live="polite"
-        ></div>
+      <article class="feature-card" tabindex="0">
+        <i class="fas fa-robot feature-icon" aria-hidden="true"></i>
+        <h3 class="feature-title">AI Summarizer</h3>
+        <p>Generate summaries to understand content quickly.</p>
       </article>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <script>
-    // Background particle animation
-    const canvas = document.getElementById('background-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-    const particleCount = 80;
-    const maxDistance = 150;
+  <section class="how-it-helps" aria-label="How It Helps">
+    <h2>How It Helps</h2>
+    <ul class="helps-list">
+      <li>Clean UI for student focus</li>
+      <li>Multiple themes to match moods</li>
+      <li>Lightweight, no account needed</li>
+      <li>Works instantly in browser</li>
+    </ul>
+  </section>
 
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    }
+  <section class="theme-showcase" aria-label="Theme Showcase">
+    <h2>Explore Themes</h2>
+    <div class="theme-cards">
+      <a href="dark-orange.html" class="theme-card" tabindex="0">
+        <img src="assets/images/dark-orange.png" alt="Dark Orange Theme Screenshot" />
+        <div class="theme-title">Dark Orange</div>
+        <span class="try-btn" role="button" tabindex="0">Try Theme</span>
+      </a>
+      <a href="red-blaze.html" class="theme-card" tabindex="0">
+        <img src="assets/images/red-blaze.png" alt="Red Blaze Theme Screenshot" />
+        <div class="theme-title">Red Blaze</div>
+        <span class="try-btn" role="button" tabindex="0">Try Theme</span>
+      </a>
+      <a href="forest-green.html" class="theme-card" tabindex="0">
+        <img src="assets/images/forest-green.png" alt="Forest Green Theme Screenshot" />
+        <div class="theme-title">Forest Green</div>
+        <span class="try-btn" role="button" tabindex="0">Try Theme</span>
+      </a>
+      <a href="purple-night.html" class="theme-card" tabindex="0">
+        <img src="assets/images/purple-night.png" alt="Purple Night Theme Screenshot" />
+        <div class="theme-title">Purple Night</div>
+        <span class="try-btn" role="button" tabindex="0">Try Theme</span>
+      </a>
+      <a href="pink-blossom.html" class="theme-card" tabindex="0">
+        <img src="assets/images/pink-blossom.png" alt="Pink Blossom Theme Screenshot" />
+        <div class="theme-title">Pink Blossom</div>
+        <span class="try-btn" role="button" tabindex="0">Try Theme</span>
+      </a>
+      <a href="light-mode.html" class="theme-card" tabindex="0">
+        <img src="assets/images/light-mode.png" alt="Light Mode Theme Screenshot" />
+        <div class="theme-title">Light Mode</div>
+        <span class="try-btn" role="button" tabindex="0">Try Theme</span>
+      </a>
+    </div>
+  </section>
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.size = 2 + Math.random() * 2;
-        this.color = 'rgba(255, 111, 0, 0.8)';
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.shadowColor = 'rgba(255, 111, 0, 0.7)';
-        ctx.shadowBlur = 8;
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    function connectParticles() {
-      for (let i = 0; i < particleCount; i++) {
-        for (let j = i + 1; j < particleCount; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < maxDistance) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 111, 0, ${1 - dist / maxDistance})`;
-            ctx.lineWidth = 1;
-            ctx.shadowColor = 'rgba(255, 111, 0, 0.5)';
-            ctx.shadowBlur = 4;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      connectParticles();
-      requestAnimationFrame(animate);
-    }
-
-    function init() {
-      resize();
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-      animate();
-    }
-
-    window.addEventListener('resize', resize);
-    init();
-
-    // To-Do List functionality
-    const todoInput = document.getElementById('todo-input');
-    const addTodoBtn = document.getElementById('add-todo-btn');
-    const todoList = document.getElementById('todo-list');
-
-    let tasks = JSON.parse(localStorage.getItem('studentDashboardTasks')) || [];
-
-    function saveTasks() {
-      localStorage.setItem('studentDashboardTasks', JSON.stringify(tasks));
-    }
-
-    function renderTasks() {
-      todoList.innerHTML = '';
-      tasks.forEach((task, index) => {
-        const li = document.createElement('li');
-        li.className = 'flex items-center justify-between';
-
-        const label = document.createElement('label');
-        label.className = 'flex items-center space-x-2 cursor-pointer flex-grow';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = task.completed;
-        checkbox.className = 'form-checkbox h-5 w-5 text-indigo-600';
-        checkbox.addEventListener('change', () => {
-          tasks[index].completed = checkbox.checked;
-          saveTasks();
-          renderTasks();
-        });
-
-        const span = document.createElement('span');
-        span.textContent = task.text;
-        span.className = task.completed ? 'line-through text-gray-400' : '';
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteBtn.className = 'text-red-500 hover:text-red-700 ml-3 focus:outline-none';
-        deleteBtn.setAttribute('aria-label', 'Delete task');
-        deleteBtn.addEventListener('click', () => {
-          tasks.splice(index, 1);
-          saveTasks();
-          renderTasks();
-        });
-
-        label.appendChild(checkbox);
-        label.appendChild(span);
-        li.appendChild(label);
-        li.appendChild(deleteBtn);
-        todoList.appendChild(li);
-      });
-    }
-
-    addTodoBtn.addEventListener('click', () => {
-      const text = todoInput.value.trim();
-      if (text) {
-        tasks.push({ text, completed: false });
-        saveTasks();
-        renderTasks();
-        todoInput.value = '';
-        todoInput.focus();
-      }
-    });
-
-    todoInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        addTodoBtn.click();
-      }
-    });
-
-    renderTasks();
-
-    // Pomodoro Timer functionality
-    const startPauseBtn = document.getElementById('start-pause-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const timerDisplay = document.getElementById('timer-display');
-    const progressRing = document.getElementById('progress-ring');
-    const sessionType = document.getElementById('session-type');
-    const focusLengthInput = document.getElementById('focus-length');
-    const breakLengthInput = document.getElementById('break-length');
-
-    const FULL_DASH_ARRAY = 2 * Math.PI * 45; // circumference of circle with r=45
-
-    let FOCUS_TIME = 25 * 60; // default 25 minutes in seconds
-    let BREAK_TIME = 5 * 60; // default 5 minutes in seconds
-
-    let timeLeft = FOCUS_TIME;
-    let timerInterval = null;
-    let isRunning = false;
-    let isFocus = true;
-
-    function updateTimerDisplay() {
-      const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-      const seconds = (timeLeft % 60).toString().padStart(2, '0');
-      timerDisplay.textContent = `${minutes}:${seconds}`;
-    }
-
-    function setProgress(time) {
-      const offset = FULL_DASH_ARRAY - (time / (isFocus ? FOCUS_TIME : BREAK_TIME)) * FULL_DASH_ARRAY;
-      progressRing.style.strokeDashoffset = offset;
-    }
-
-    function switchSession() {
-      isFocus = !isFocus;
-      timeLeft = isFocus ? FOCUS_TIME : BREAK_TIME;
-      sessionType.textContent = isFocus ? 'Focus Session' : 'Break Session';
-      setProgress(timeLeft);
-      updateTimerDisplay();
-    }
-
-    function tick() {
-      if (timeLeft > 0) {
-        timeLeft--;
-        updateTimerDisplay();
-        setProgress(timeLeft);
-      } else {
-        switchSession();
-      }
-    }
-
-    function saveCustomTimes() {
-      localStorage.setItem('pomodoroFocusTime', FOCUS_TIME);
-      localStorage.setItem('pomodoroBreakTime', BREAK_TIME);
-    }
-
-    function loadCustomTimes() {
-      const savedFocus = localStorage.getItem('pomodoroFocusTime');
-      const savedBreak = localStorage.getItem('pomodoroBreakTime');
-      if (savedFocus) {
-        FOCUS_TIME = parseInt(savedFocus, 10);
-      }
-      if (savedBreak) {
-        BREAK_TIME = parseInt(savedBreak, 10);
-      }
-    }
-
-    function applyInputValues() {
-      focusLengthInput.value = Math.floor(FOCUS_TIME / 60);
-      breakLengthInput.value = Math.floor(BREAK_TIME / 60);
-    }
-
-    startPauseBtn.addEventListener('click', () => {
-      if (isRunning) {
-        clearInterval(timerInterval);
-        startPauseBtn.textContent = 'Start';
-      } else {
-        timerInterval = setInterval(tick, 1000);
-        startPauseBtn.textContent = 'Pause';
-      }
-      isRunning = !isRunning;
-    });
-
-    resetBtn.addEventListener('click', () => {
-      clearInterval(timerInterval);
-      isRunning = false;
-      isFocus = true;
-      timeLeft = FOCUS_TIME;
-      updateTimerDisplay();
-      setProgress(timeLeft);
-      startPauseBtn.textContent = 'Start';
-      sessionType.textContent = 'Focus Session';
-    });
-
-    focusLengthInput.addEventListener('change', () => {
-      const val = parseInt(focusLengthInput.value, 10);
-      if (!isNaN(val) && val > 0) {
-        FOCUS_TIME = val * 60;
-        saveCustomTimes();
-        if (isFocus) {
-          timeLeft = FOCUS_TIME;
-          updateTimerDisplay();
-          setProgress(timeLeft);
-        }
-      }
-    });
-
-    breakLengthInput.addEventListener('change', () => {
-      const val = parseInt(breakLengthInput.value, 10);
-      if (!isNaN(val) && val > 0) {
-        BREAK_TIME = val * 60;
-        saveCustomTimes();
-        if (!isFocus) {
-          timeLeft = BREAK_TIME;
-          updateTimerDisplay();
-          setProgress(timeLeft);
-        }
-      }
-    });
-
-    // Initialize custom times on page load
-    loadCustomTimes();
-    applyInputValues();
-    timeLeft = FOCUS_TIME;
-    updateTimerDisplay();
-    setProgress(timeLeft);
-
-    // Flashcards Tool functionality
-    const flashcard = document.getElementById('flashcard');
-    const flashcardInner = document.getElementById('flashcard-inner');
-    const flashcardFront = document.getElementById('flashcard-front');
-    const flashcardBack = document.getElementById('flashcard-back');
-    const flashcardForm = document.getElementById('flashcard-form');
-    const flashcardFrontInput = document.getElementById('flashcard-front-input');
-    const flashcardBackInput = document.getElementById('flashcard-back-input');
-    const flashcardList = document.getElementById('flashcard-list');
-
-    let flashcards = JSON.parse(localStorage.getItem('studentDashboardFlashcards')) || [];
-    let currentFlashcardIndex = 0;
-    let isFlipped = false;
-
-    function saveFlashcards() {
-      localStorage.setItem('studentDashboardFlashcards', JSON.stringify(flashcards));
-    }
-
-    function renderFlashcard() {
-      if (flashcards.length === 0) {
-        flashcardFront.textContent = 'Front Side';
-        flashcardBack.textContent = 'Back Side';
-        flashcardInner.style.transform = 'rotateY(0deg)';
-        isFlipped = false;
-        return;
-      }
-      const card = flashcards[currentFlashcardIndex];
-      flashcardFront.textContent = card.front;
-      flashcardBack.textContent = card.back;
-      flashcardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
-    }
-
-    function renderFlashcardList() {
-      flashcardList.innerHTML = '';
-      flashcards.forEach((card, index) => {
-        const li = document.createElement('li');
-        li.className = 'flex items-center justify-between bg-indigo-100 rounded-md px-3 py-1 cursor-pointer hover:bg-indigo-200';
-        li.textContent = card.front;
-        li.setAttribute('tabindex', '0');
-        li.setAttribute('role', 'button');
-        li.setAttribute('aria-pressed', index === currentFlashcardIndex ? 'true' : 'false');
-        li.addEventListener('click', () => {
-          currentFlashcardIndex = index;
-          isFlipped = false;
-          renderFlashcard();
-          renderFlashcardList();
-        });
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            li.click();
-          }
-        });
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteBtn.className = 'text-red-500 hover:text-red-700 ml-3 focus:outline-none';
-        deleteBtn.setAttribute('aria-label', 'Delete flashcard');
-        deleteBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          flashcards.splice(index, 1);
-          if (currentFlashcardIndex >= flashcards.length) {
-            currentFlashcardIndex = flashcards.length - 1;
-          }
-          saveFlashcards();
-          renderFlashcard();
-          renderFlashcardList();
-        });
-
-        li.appendChild(deleteBtn);
-        flashcardList.appendChild(li);
-      });
-    }
-
-    flashcard.addEventListener('click', () => {
-      if (flashcards.length === 0) return;
-      isFlipped = !isFlipped;
-      flashcardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
-    });
-
-    flashcardForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const front = flashcardFrontInput.value.trim();
-      const back = flashcardBackInput.value.trim();
-      if (front && back) {
-        flashcards.push({ front, back });
-        saveFlashcards();
-        flashcardFrontInput.value = '';
-        flashcardBackInput.value = '';
-        currentFlashcardIndex = flashcards.length - 1;
-        isFlipped = false;
-        renderFlashcard();
-        renderFlashcardList();
-      }
-    });
-
-    renderFlashcard();
-    renderFlashcardList();
-
-    // Blackbox AI prompt sender functionality
-    const bbaiInput = document.getElementById('bbai-input');
-    const bbaiSendBtn = document.getElementById('bbai-send-btn');
-    const bbaiMessage = document.getElementById('bbai-message');
-
-    bbaiSendBtn.addEventListener('click', () => {
-      const userInput = bbaiInput.value.trim();
-      if (!userInput) {
-        bbaiMessage.textContent = 'Please enter some input.';
-        bbaiMessage.style.opacity = '1';
-        setTimeout(() => {
-          bbaiMessage.style.opacity = '0';
-        }, 2000);
-        return;
-      }
-      const prompt = `Summarize this: ${userInput}`;
-      navigator.clipboard.writeText(prompt).then(() => {
-        bbaiMessage.textContent = 'Prompt copied. Just paste it into the chat!';
-        bbaiMessage.style.opacity = '1';
-        setTimeout(() => {
-          bbaiMessage.style.opacity = '0';
-          window.open('https://www.blackbox.ai/', '_blank');
-        }, 1000);
-      }).catch(() => {
-        bbaiMessage.textContent = 'Failed to copy prompt. Please copy manually.';
-        bbaiMessage.style.opacity = '1';
-        setTimeout(() => {
-          bbaiMessage.style.opacity = '0';
-        }, 2000);
-      });
-    });
-  </script>
+  <footer>
+    <div class="container">
+      <div>
+        <a href="https://github.com/your-repo" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">GitHub Repo</a> |
+        <a href="#" aria-label="About this project">About this project</a> |
+        <a href="mailto:hello@dashboard.com" aria-label="Contact email">hello@dashboard.com</a> |
+        <a href="#" aria-label="Privacy Policy">Privacy Policy</a> &amp; <a href="#" aria-label="Terms of Use">Terms of Use</a>
+      </div>
+      <div class="social-icons" aria-label="Social media links">
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+    <div class="back-to-top">
+      <a href="#top" aria-label="Back to top">Back to top ↑</a>
+    </div>
+  </footer>
 </body>
 </html>
