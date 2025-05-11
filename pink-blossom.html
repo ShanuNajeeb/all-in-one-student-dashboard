@@ -17,6 +17,8 @@
       overflow-x: hidden;
       position: relative;
       z-index: 0;
+      background-color: #000000;
+      color: #ffffff;
     }
     #background-canvas {
       position: fixed;
@@ -27,6 +29,7 @@
       z-index: -1;
       pointer-events: none;
       display: block;
+      background-color: #000000;
     }
     .fade-in {
       animation: fadeIn 1.2s ease forwards;
@@ -50,6 +53,10 @@
     .rotate-y-180 {
       transform: rotateY(180deg);
     }
+    /* Add slight greyish pink background for timer, pomodoro, summarizer, and todo list cards */
+    .card {
+      background-color: #330022 !important;
+    }
   </style>
   <link rel="stylesheet" href="themes/pink-blossom.css" />
 </head>
@@ -64,7 +71,7 @@
       <option value="purple-night.html">Purple Night</option>
       <option value="pink-blossom.html" selected>Pink Blossom</option>
       <option value="light-mode.html">Light Mode</option>
-  </select>
+    </select>
   </div>
   <script>
     // Add event listener to theme select dropdown for navigation
@@ -114,7 +121,7 @@
         <h2 class="text-2xl font-semibold text-primary mb-3 flex items-center">
           <i class="fas fa-hourglass-start mr-2"></i> Pomodoro Timer
         </h2>
-        <p class="text-secondary mb-4">25-minute focus &amp; 5-minute break cycles.</p>
+        <p class="text-secondary mb-4">Customizable focus &amp; break cycles.</p>
         <div class="flex flex-col items-center space-y-4">
           <div class="relative w-32 h-32">
             <svg class="transform -rotate-90" viewBox="0 0 100 100" width="128" height="128" aria-hidden="true" focusable="false">
@@ -164,6 +171,30 @@
             >
               Reset
             </button>
+          </div>
+          <div class="flex space-x-4 mt-4">
+            <label for="focus-length" class="text-secondary text-sm flex items-center space-x-2">
+              <span>Focus (min):</span>
+              <input
+                type="number"
+                id="focus-length"
+                min="1"
+                max="180"
+                class="w-16 rounded-md border border-gray-300 px-2 py-1 text-center text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="Set focus length in minutes"
+              />
+            </label>
+            <label for="break-length" class="text-secondary text-sm flex items-center space-x-2">
+              <span>Break (min):</span>
+              <input
+                type="number"
+                id="break-length"
+                min="1"
+                max="60"
+                class="w-16 rounded-md border border-gray-300 px-2 py-1 text-center text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="Set break length in minutes"
+              />
+            </label>
           </div>
           <div class="text-secondary text-sm select-none" id="session-type" aria-live="polite" aria-atomic="true">Focus Session</div>
         </div>
@@ -255,7 +286,6 @@
       </article>
     </section>
   </main>
-
   <script>
     // Background particle animation
     const canvas = document.getElementById('background-canvas');
@@ -419,10 +449,13 @@
     const timerDisplay = document.getElementById('timer-display');
     const progressRing = document.getElementById('progress-ring');
     const sessionType = document.getElementById('session-type');
+    const focusLengthInput = document.getElementById('focus-length');
+    const breakLengthInput = document.getElementById('break-length');
 
     const FULL_DASH_ARRAY = 2 * Math.PI * 45; // circumference of circle with r=45
-    const FOCUS_TIME = 25 * 60; // 25 minutes in seconds
-    const BREAK_TIME = 5 * 60; // 5 minutes in seconds
+
+    let FOCUS_TIME = 25 * 60; // default 25 minutes in seconds
+    let BREAK_TIME = 5 * 60; // default 5 minutes in seconds
 
     let timeLeft = FOCUS_TIME;
     let timerInterval = null;
@@ -480,150 +513,37 @@
       sessionType.textContent = 'Focus Session';
     });
 
-    // Flashcards Tool functionality
-    const flashcard = document.getElementById('flashcard');
-    const flashcardInner = document.getElementById('flashcard-inner');
-    const flashcardFront = document.getElementById('flashcard-front');
-    const flashcardBack = document.getElementById('flashcard-back');
-    const flashcardForm = document.getElementById('flashcard-form');
-    const flashcardFrontInput = document.getElementById('flashcard-front-input');
-    const flashcardBackInput = document.getElementById('flashcard-back-input');
-    const flashcardList = document.getElementById('flashcard-list');
-
-    let flashcards = JSON.parse(localStorage.getItem('studentDashboardFlashcards')) || [];
-    let currentFlashcardIndex = 0;
-    let isFlipped = false;
-
-    function saveFlashcards() {
-      localStorage.setItem('studentDashboardFlashcards', JSON.stringify(flashcards));
-    }
-
-    function renderFlashcard() {
-      if (flashcards.length === 0) {
-        flashcardFront.textContent = 'Front Side';
-        flashcardBack.textContent = 'Back Side';
-        flashcardInner.style.transform = 'rotateY(0deg)';
-        isFlipped = false;
-        return;
-      }
-      const card = flashcards[currentFlashcardIndex];
-      flashcardFront.textContent = card.front;
-      flashcardBack.textContent = card.back;
-      flashcardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
-    }
-
-    function renderFlashcardList() {
-      flashcardList.innerHTML = '';
-      flashcards.forEach((card, index) => {
-        const li = document.createElement('li');
-        li.className = 'flex items-center justify-between bg-indigo-100 rounded-md px-3 py-1 cursor-pointer hover:bg-indigo-200';
-        li.textContent = card.front;
-        li.setAttribute('tabindex', '0');
-        li.setAttribute('role', 'button');
-        li.setAttribute('aria-pressed', index === currentFlashcardIndex ? 'true' : 'false');
-        li.addEventListener('click', () => {
-          currentFlashcardIndex = index;
-          isFlipped = false;
-          renderFlashcard();
-          renderFlashcardList();
-        });
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            li.click();
-          }
-        });
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteBtn.className = 'text-red-500 hover:text-red-700 ml-3 focus:outline-none';
-        deleteBtn.setAttribute('aria-label', 'Delete flashcard');
-        deleteBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          flashcards.splice(index, 1);
-          if (currentFlashcardIndex >= flashcards.length) {
-            currentFlashcardIndex = flashcards.length - 1;
-          }
-          saveFlashcards();
-          renderFlashcard();
-          renderFlashcardList();
-        });
-
-        li.appendChild(deleteBtn);
-        flashcardList.appendChild(li);
-      });
-    }
-
-    flashcard.addEventListener('click', () => {
-      if (flashcards.length === 0) return;
-      isFlipped = !isFlipped;
-      flashcardInner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
-    });
-
-    flashcardForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const front = flashcardFrontInput.value.trim();
-      const back = flashcardBackInput.value.trim();
-      if (front && back) {
-        flashcards.push({ front, back });
-        saveFlashcards();
-        flashcardFrontInput.value = '';
-        flashcardBackInput.value = '';
-        currentFlashcardIndex = flashcards.length - 1;
-        isFlipped = false;
-        renderFlashcard();
-        renderFlashcardList();
+    focusLengthInput.addEventListener('change', () => {
+      const val = parseInt(focusLengthInput.value, 10);
+      if (!isNaN(val) && val > 0) {
+        FOCUS_TIME = val * 60;
+        if (isFocus) {
+          timeLeft = FOCUS_TIME;
+          updateTimerDisplay();
+          setProgress(timeLeft);
+        }
       }
     });
 
-    renderFlashcard();
-    renderFlashcardList();
-
-    // Blackbox AI prompt sender functionality
-    const bbaiInput = document.getElementById('bbai-input');
-    const bbaiSendBtn = document.getElementById('bbai-send-btn');
-    const bbaiMessage = document.getElementById('bbai-message');
-
-    bbaiSendBtn.addEventListener('click', () => {
-      const userInput = bbaiInput.value.trim();
-      if (!userInput) {
-        bbaiMessage.textContent = 'Please enter some input.';
-        bbaiMessage.style.opacity = '1';
-        setTimeout(() => {
-          bbaiMessage.style.opacity = '0';
-        }, 2000);
-        return;
+    breakLengthInput.addEventListener('change', () => {
+      const val = parseInt(breakLengthInput.value, 10);
+      if (!isNaN(val) && val > 0) {
+        BREAK_TIME = val * 60;
+        if (!isFocus) {
+          timeLeft = BREAK_TIME;
+          updateTimerDisplay();
+          setProgress(timeLeft);
+        }
       }
-      const prompt = `Summarize this: ${userInput}`;
-      navigator.clipboard.writeText(prompt).then(() => {
-        bbaiMessage.textContent = 'Prompt copied. Just paste it into the chat!';
-        bbaiMessage.style.opacity = '1';
-        setTimeout(() => {
-          bbaiMessage.style.opacity = '0';
-          window.open('https://www.blackbox.ai/', '_blank');
-        }, 1000);
-      }).catch(() => {
-        bbaiMessage.textContent = 'Failed to copy prompt. Please copy manually.';
-        bbaiMessage.style.opacity = '1';
-        setTimeout(() => {
-          bbaiMessage.style.opacity = '0';
-        }, 2000);
-      });
     });
+
+    // Initialize timer display and progress on page load
+    updateTimerDisplay();
+    setProgress(timeLeft);
+
+    // Prefill input fields with current times
+    focusLengthInput.value = Math.floor(FOCUS_TIME / 60);
+    breakLengthInput.value = Math.floor(BREAK_TIME / 60);
   </script>
-  <style>
-    body {
-      background-color: #000000;
-      color: #ffffff;
-    }
-    #background-canvas {
-      background-color: #000000;
-    }
-    /* Add slight greyish pink background for timer, pomodoro, summarizer, and todo list cards */
-    .card {
-      background-color: #330022 !important;
-    }
-  </style>
 </body>
 </html>
-</create_file>
