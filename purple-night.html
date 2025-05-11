@@ -53,6 +53,10 @@
     .rotate-y-180 {
       transform: rotateY(180deg);
     }
+    /* Add slight greyish purple background for timer, pomodoro, summarizer, and todo list cards */
+    .card {
+      background-color: #220022 !important;
+    }
   </style>
   <link rel="stylesheet" href="themes/purple-night.css" />
 </head>
@@ -67,7 +71,7 @@
       <option value="purple-night.html" selected>Purple Night</option>
       <option value="pink-blossom.html">Pink Blossom</option>
       <option value="light-mode.html">Light Mode</option>
-  </select>
+    </select>
   </div>
   <script>
     // Add event listener to theme select dropdown for navigation
@@ -117,7 +121,7 @@
         <h2 class="text-2xl font-semibold text-primary mb-3 flex items-center">
           <i class="fas fa-hourglass-start mr-2"></i> Pomodoro Timer
         </h2>
-        <p class="text-secondary mb-4">25-minute focus &amp; 5-minute break cycles.</p>
+        <p class="text-secondary mb-4">Customizable focus &amp; break cycles.</p>
         <div class="flex flex-col items-center space-y-4">
           <div class="relative w-32 h-32">
             <svg class="transform -rotate-90" viewBox="0 0 100 100" width="128" height="128" aria-hidden="true" focusable="false">
@@ -167,6 +171,30 @@
             >
               Reset
             </button>
+          </div>
+          <div class="flex space-x-4 mt-4">
+            <label for="focus-length" class="text-secondary text-sm flex items-center space-x-2">
+              <span>Focus (min):</span>
+              <input
+                type="number"
+                id="focus-length"
+                min="1"
+                max="180"
+                class="w-16 rounded-md border border-gray-300 px-2 py-1 text-center text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="Set focus length in minutes"
+              />
+            </label>
+            <label for="break-length" class="text-secondary text-sm flex items-center space-x-2">
+              <span>Break (min):</span>
+              <input
+                type="number"
+                id="break-length"
+                min="1"
+                max="60"
+                class="w-16 rounded-md border border-gray-300 px-2 py-1 text-center text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="Set break length in minutes"
+              />
+            </label>
           </div>
           <div class="text-secondary text-sm select-none" id="session-type" aria-live="polite" aria-atomic="true">Focus Session</div>
         </div>
@@ -487,6 +515,38 @@
       sessionType.textContent = 'Focus Session';
     });
 
+    focusLengthInput.addEventListener('change', () => {
+      const val = parseInt(focusLengthInput.value, 10);
+      if (!isNaN(val) && val > 0) {
+        FOCUS_TIME = val * 60;
+        if (isFocus) {
+          timeLeft = FOCUS_TIME;
+          updateTimerDisplay();
+          setProgress(timeLeft);
+        }
+      }
+    });
+
+    breakLengthInput.addEventListener('change', () => {
+      const val = parseInt(breakLengthInput.value, 10);
+      if (!isNaN(val) && val > 0) {
+        BREAK_TIME = val * 60;
+        if (!isFocus) {
+          timeLeft = BREAK_TIME;
+          updateTimerDisplay();
+          setProgress(timeLeft);
+        }
+      }
+    });
+
+    // Initialize timer display and progress on page load
+    updateTimerDisplay();
+    setProgress(timeLeft);
+
+    // Prefill input fields with current times
+    focusLengthInput.value = Math.floor(FOCUS_TIME / 60);
+    breakLengthInput.value = Math.floor(BREAK_TIME / 60);
+
     // Flashcards Tool functionality
     const flashcard = document.getElementById('flashcard');
     const flashcardInner = document.getElementById('flashcard-inner');
@@ -621,9 +681,8 @@
   <style>
     /* Add slight grey background for timer, pomodoro, summarizer, and todo list cards */
     .card {
-      background-color: #000000 !important;
+      background-color: #220022 !important;
     }
   </style>
 </body>
 </html>
-</create_file>
